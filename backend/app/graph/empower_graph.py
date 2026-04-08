@@ -8,7 +8,7 @@ from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
 
 from app.config import settings
-from app.supabase_service import fetch_jobs, fetch_mentors, seed_catalog_if_empty
+from app.supabase_service import fetch_jobs, fetch_mentors, seed_catalog_if_empty, log_match_request
 
 logger = logging.getLogger(__name__)
 
@@ -349,6 +349,9 @@ def build_graph():
 
 
 def run_match_workflow(user_message: str) -> dict[str, Any]:
+    # Log the match request for analytics
+    log_match_request(user_message)
+
     graph = build_graph()
     out = graph.invoke({"user_message": user_message})
     return out["response"]

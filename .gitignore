@@ -1,0 +1,8 @@
+.vercel
+
+# Local environment files
+backend/.env
+frontend/.env.local
+
+# Python environment
+backend/.venv

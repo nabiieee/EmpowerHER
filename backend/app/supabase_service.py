@@ -52,6 +52,35 @@ def fetch_jobs() -> list[dict[str, Any]]:
     )
 
 
+def _post_json(path: str, data: dict[str, Any]) -> dict[str, Any] | None:
+    """Helper for POST requests to Supabase REST API."""
+    base = settings.supabase_url.rstrip("/")
+    url = f"{base}/rest/v1/{path}"
+    try:
+        with httpx.Client(timeout=30.0) as client:
+            r = client.post(url, headers=_rest_headers(), json=data)
+            r.raise_for_status()
+            return r.json()
+    except Exception as e:
+        logger.exception("Supabase POST request failed: %s", e)
+        return None
+
+
+def log_match_request(message: str) -> bool:
+    """Log a match request for analytics. Returns True if logged successfully."""
+    if not settings.supabase_url or not settings.supabase_key:
+        logger.debug("Supabase not configured; skipping match request logging.")
+        return False
+
+    result = _post_json("match_requests", {"message": message})
+    if result:
+        logger.info("Match request logged to analytics")
+        return True
+    else:
+        logger.warning("Failed to log match request to analytics")
+        return False
+
+
 def seed_catalog_if_empty() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """In-memory demo data when Supabase is not configured or tables are empty."""
     mentors = [
