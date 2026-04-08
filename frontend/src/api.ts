@@ -31,14 +31,20 @@ export type MatchResponse = {
 };
 
 export async function postMatchQuery(message: string): Promise<MatchResponse> {
+  console.log('Making API call to:', `${API_BASE}/api/match`, 'with message:', message);
   const res = await fetch(`${API_BASE}/api/match`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message }),
+    cache: 'no-cache',
   });
+  console.log('API response status:', res.status);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
+    console.error('API error response:', err);
     throw new Error((err as { detail?: string }).detail ?? res.statusText);
   }
-  return res.json();
+  const data = await res.json();
+  console.log('API response data:', data);
+  return data;
 }

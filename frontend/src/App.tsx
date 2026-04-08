@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { postMatchQuery, type MatchResponse } from "./api";
 
 const EXAMPLE_PROMPTS = [
-  "I'm a bootcamp grad pivoting from retail into UX research in health tech.",
-  "Senior PM returning from parental leave, want flexible remote roles in fintech.",
-  "New grad in CS looking for a mentor in backend engineering and interview prep.",
+  "I'm a woman in tech returning from maternity leave, looking for flexible remote roles in product management.",
+  "As a female engineer, I want mentorship in leadership and navigating imposter syndrome in male-dominated teams.",
+  "I'm a woman of color in UX design seeking guidance on building confidence and advancing in health tech.",
 ];
 
 function SparklesIcon() {
@@ -24,12 +24,15 @@ export default function App() {
   const runMatch = useCallback(async () => {
     const trimmed = input.trim();
     if (!trimmed || loading) return;
+    console.log('Sending request with input:', trimmed);
     setLoading(true);
     setError(null);
     try {
       const data = await postMatchQuery(trimmed);
+      console.log('Received response:', data);
       setResult(data);
     } catch (e) {
+      console.error('API call failed:', e);
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
       setLoading(false);
@@ -48,7 +51,7 @@ export default function App() {
               <p className="font-display text-lg font-semibold tracking-tight text-rose-950">
                 EmpowerHer
               </p>
-              <p className="text-xs text-slate-500">Mentors &amp; roles, matched to your story</p>
+              <p className="text-xs text-slate-500">Female mentors & opportunities for women in tech</p>
             </div>
           </div>
           <span className="hidden rounded-full bg-blush-100 px-3 py-1 text-xs font-medium text-rose-900 sm:inline">
@@ -60,11 +63,10 @@ export default function App() {
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <section className="mb-12 text-center sm:text-left">
           <h1 className="font-display text-3xl font-semibold leading-tight text-rose-950 sm:text-4xl">
-            Tell us where you are — we’ll connect you with guides and opportunities.
+            Empowering women in tech — we connect you with female mentors and opportunities that understand your journey.
           </h1>
           <p className="mt-4 max-w-2xl text-slate-600">
-            Describe your goals, constraints, and background in your own words. Our LangGraph workflow interprets your
-            intent, queries Supabase for mentors and jobs, and explains why each match fits.
+            Share your story as a woman in tech. Our AI-powered platform connects you with experienced female mentors who get the unique challenges you face, plus job opportunities that value work-life balance and diversity.
           </p>
         </section>
 
@@ -77,7 +79,7 @@ export default function App() {
             rows={5}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Example: I'm transitioning from teaching to product design and need interview practice plus remote-friendly roles…"
+            placeholder="Example: I'm a woman returning from maternity leave looking for flexible remote work in product management, plus mentorship on balancing career and family…"
             className="w-full resize-y rounded-xl border border-rose-100 bg-blush-50/50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-orchid-500 focus:outline-none focus:ring-2 focus:ring-orchid-500/30"
           />
           <div className="mt-3 flex flex-wrap gap-2">
@@ -194,7 +196,7 @@ export default function App() {
       </main>
 
       <footer className="mt-16 border-t border-rose-100 py-8 text-center text-xs text-slate-500">
-        EmpowerHer · FastAPI · LangGraph · Supabase
+        EmpowerHer · Built with care for women in tech
       </footer>
     </div>
   );

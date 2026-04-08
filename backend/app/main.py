@@ -43,9 +43,11 @@ def health():
 
 @app.post("/api/match", response_model=MatchResponse)
 def match(req: MatchRequest):
+    logger.info(f"Received match request: {req.message[:100]}...")
     try:
         data = run_match_workflow(req.message)
+        logger.info(f"Match completed successfully for: {req.message[:50]}...")
         return MatchResponse.model_validate(data)
     except Exception as e:
-        logger.exception("Match workflow failed")
+        logger.exception(f"Match workflow failed for: {req.message[:50]}...")
         raise HTTPException(status_code=500, detail=str(e)) from e
