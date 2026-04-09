@@ -1,0 +1,10 @@
+{
+  "build": {
+    "builder": "dockerfile",
+    "buildCommand": "pip install -r requirements.txt"
+  },
+  "deploy": {
+    "restartPolicyMaxRetries": 5,
+    "restartPolicyWindowMs": 600000
+  }
+}
