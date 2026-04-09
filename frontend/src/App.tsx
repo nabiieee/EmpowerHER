@@ -54,9 +54,6 @@ export default function App() {
               <p className="text-xs text-slate-500">Female mentors & opportunities for women in tech</p>
             </div>
           </div>
-          <span className="hidden rounded-full bg-blush-100 px-3 py-1 text-xs font-medium text-rose-900 sm:inline">
-            Natural language · AI-guided
-          </span>
         </div>
       </header>
 
