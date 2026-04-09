@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL="https://empowerher.up.railway.app";
+const API_BASE = import.meta.env.VITE_API_URL ?? "";
 
 export type MentorMatch = {
   id: string;
